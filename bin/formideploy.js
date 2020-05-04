@@ -65,6 +65,7 @@ const getAction = (args) => {
   return help;
 };
 
+// Get options for actions.
 const getOptions = (args) => ({
   port: parseInt(args.find((val, i) => args[i - 1] === "--port")) || DEFAULT_PORT,
   dryrun: args.includes("--dryrun"),
