@@ -8,7 +8,7 @@ const { log } = console;
 
 const DEFAULT_PORT = 5000;
 const USAGE = `
-Usage: formideploy <action> [options]
+Usage: ${pkg.name} <action> [options]
 
 Actions: (<action>)
   serve         Run local server from static build directory
@@ -23,9 +23,9 @@ Options:
   --version, -v   Show version number                    [boolean]
 
 Examples:
-  formideploy serve                           Serve build directory on port 5000.
-  formideploy deploy --staging                Deploy build to staging.
-  formideploy deploy --production --dryrun    Simulate production build deploy.
+  ${pkg.name} serve                           Serve build directory on port 5000.
+  ${pkg.name} deploy --staging                Deploy build to staging.
+  ${pkg.name} deploy --production --dryrun    Simulate production build deploy.
 `.trim();
 
 // ============================================================================
