@@ -2,6 +2,7 @@
 
 "use strict";
 
+const { serve } = require("../lib/actions/serve");
 const pkg = require("../package.json");
 
 const { log } = console;
@@ -34,15 +35,14 @@ Examples:
 const help = async () => { log(USAGE); };
 const version = async () => { log(pkg.version); };
 
-const serve = async ({ port }) => {
-  console.log("TODO: serve", { port });
-};
-
 const deploy = async ({ staging, production, dryrun }) => {
   if (!staging && !production) {
     throw new Error("Must choose either --staging or --production deployment");
   }
-  console.log("TODO: deploy", { staging, production, dryrun });
+
+  // TODO(2): Deploy staging https://github.com/FormidableLabs/formideploy/issues/2
+  // TODO(3): Deploy production https://github.com/FormidableLabs/formideploy/issues/2
+  log("TODO: deploy", { staging, production, dryrun });
 };
 
 // ============================================================================
