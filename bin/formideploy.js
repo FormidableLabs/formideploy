@@ -31,13 +31,8 @@ Examples:
 // ============================================================================
 // Actions
 // ============================================================================
-const help = async () => {
-  log(USAGE);
-};
-
-const version = async () => {
-  log(pkg.version);
-};
+const help = async () => { log(USAGE); };
+const version = async () => { log(pkg.version); };
 
 const serve = async ({ port }) => {
   console.log("TODO: serve", { port });
