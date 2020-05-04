@@ -6,7 +6,8 @@ const pkg = require("../package.json");
 
 const { log } = console;
 
-const usage = `
+const DEFAULT_PORT = 5000;
+const USAGE = `
 Usage: formideploy <action> [options]
 
 Actions: (<action>)
@@ -14,9 +15,10 @@ Actions: (<action>)
   deploy        Deploy build directory to website
 
 Options:
-  --dryrun        Don't actually run deployment actions. [boolean]
   --staging       Deploy build to staging site.          [boolean]
   --production    Deploy build to staging production.    [boolean]
+  --dryrun        Don't actually run deployment actions. [boolean]
+  --port          Port to run local server on.           [number] [default: 5000]
   --help, -h      Show help                              [boolean]
   --version, -v   Show version number                    [boolean]
 
@@ -26,32 +28,57 @@ Examples:
   formideploy deploy --production --dryrun    Simulate production build deploy.
 `.trim();
 
+// ============================================================================
 // Actions
-const help = () => {
-  log(usage);
+// ============================================================================
+const help = async () => {
+  log(USAGE);
 };
-const version = () => {
+
+const version = async () => {
   log(pkg.version);
 };
 
+const serve = async ({ port }) => {
+  console.log("TODO: serve", { port });
+};
+
+const deploy = async ({ staging, production, dryrun }) => {
+  if (!staging && !production) {
+    throw new Error("Must choose either --staging or --production deployment");
+  }
+  console.log("TODO: deploy", { staging, production, dryrun });
+};
+
+// ============================================================================
+// Configuration
+// ============================================================================
 // Get action or help / version.
 const getAction = (args) => {
   // Return actions in priority order.
   if (args.includes("--help") || args.includes("-h")) { return help; }
   if (args.includes("--version") || args.includes("-v")) { return version; }
+  if (args.includes("serve")) { return serve; }
+  if (args.includes("deploy")) { return deploy; }
 
   // Default.
   return help;
 };
 
-const getOptions = (args) => ({});
+const getOptions = (args) => ({
+  port: parseInt(args.find((val, i) => args[i - 1] === "--port")) || DEFAULT_PORT,
+  dryrun: args.includes("--dryrun"),
+  production: args.includes("--production") && !args.includes("--staging"),
+  staging: args.includes("--staging")
+});
 
+// ============================================================================
+// Script
+// ============================================================================
 const main = async () => {
   const args = process.argv.slice(2); // eslint-disable-line no-magic-numbers
   const action = getAction(args);
-  const opts = getOptions(args);
-
-  action(opts);
+  await action(getOptions(args));
 };
 
 if (require.main === module) {
