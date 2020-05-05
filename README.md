@@ -88,7 +88,18 @@ module.exports = (cfg) => {
 
 ### Serve
 
-- [ ] TODO: Localdev serving
+Once you have configured `formideploy`, you can serve your production build (specified at `build.dir`) with:
+
+```sh
+$ formideploy serve
+$ formideploy serve --port 3333
+```
+
+And then look for the terminal log message as to where to navigate to to see your lander / base website in action!
+
+```sh
+[serve] Serving build from "dist" at: http://localhost:5000/open-source/spectacle
+```
 
 ### Deploy
 
