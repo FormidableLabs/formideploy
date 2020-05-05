@@ -8,14 +8,6 @@ Deployment helpers for everything Formidable website-related.
 
 ## Usage
 
-Install the library.
-
-```sh
-$ yarn add --dev formideploy
-```
-
-Check out basic usage:
-
 ```
 Usage: formideploy <action> [options]
 
@@ -44,6 +36,23 @@ Formideploy helps serve and deploy for our main website ([`formidable.com`](http
 Project integration entails configuration within a repository and secrets placed into CI.
 
 ### Repository configuration
+
+To add `formideploy` to your project, first add it via yarn:
+
+```sh
+$ yarn add --dev formideploy
+```
+
+Typically, you'll then want some helper `package.json:scripts` wrappers:
+
+```js
+// package.json
+"scripts": {
+  "serve": "formideploy serve",
+  "deploy:stage": "formideploy deploy --staging",
+  "deploy:prod": "formideploy deploy --production",
+}
+```
 
 - [ ] TODO: Config overrides.
 
