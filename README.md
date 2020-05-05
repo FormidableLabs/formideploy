@@ -54,7 +54,11 @@ Typically, you'll then want some helper `package.json:scripts` wrappers:
 }
 ```
 
-And then you'll need to override some configuration variables. Open up [`lib/config.js`](./lib/config.js) and look for the `DEFAULTS` object and comments (particularly those prefixed with `REQUIRED`). You will need to override the defaults with a configuration file in the current working directory from which you run `formideploy` named `formideploy.config.js`. The overrides can be either a function that takes as input the default configuration and mutates it, or an object which is deep merged into the defaults.
+And then you'll need to override some configuration variables.
+
+Please open up and read all of the `DEFAULTS` object in [`lib/config.js`](./lib/config.js) (particularly those prefixed with `REQUIRED`). The configuration file is self-documenting for everything that you will need to integrate your project.
+
+You will then need to override the applicable defaults with a configuration file in the current working directory from which you run `formideploy` named `formideploy.config.js`. The overrides can be either a function that takes as input the default configuration and mutates it, or an object which is deep merged into the defaults.
 
 Here are both ways of doing the necessary overrides:
 
