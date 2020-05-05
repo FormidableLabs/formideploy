@@ -106,7 +106,7 @@ $ formideploy serve --port 3333
 And then look for the terminal log message as to where to navigate to to see your lander / base website in action!
 
 ```sh
-[serve] Serving build from "dist" at: http://localhost:5000/open-source/spectacle
+[serve] Serving build from "dist/open-source/spectacle" at: http://localhost:4000/open-source/spectacle
 ```
 
 ### Deploy
