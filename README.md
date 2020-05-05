@@ -4,7 +4,11 @@ formideploy
 [![npm version][npm_img]][npm_site]
 [![Travis Status][trav_img]][trav_site]
 
-Deployment helpers for everything Formidable website-related.
+Deployment helpers for everything Formidable website-related. This tool helps our base website and open source landers projects:
+
+* Serve a production build in localdev
+* Deploy the build to staging (`surge.sh`)
+* Deploy the build to production (AWS)
 
 ## Usage
 
