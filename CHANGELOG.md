@@ -1,6 +1,11 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Feature: Add `formideploy deploy --staging` action.
+  [#2](https://github.com/FormidableLabs/formideploy/issues/2)
+
 ## 0.1.0
 
 * Feature: Add `formideploy serve` action.
