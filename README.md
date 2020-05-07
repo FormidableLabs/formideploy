@@ -52,6 +52,7 @@ Typically, you'll then want some helper `package.json:scripts` wrappers:
 ```js
 // package.json
 "scripts": {
+  "build": "**NOTE**: Not part of formideploy, but should produce a full prod distribution",
   "serve": "formideploy serve",
   "deploy:stage": "formideploy deploy --staging",
   "deploy:prod": "formideploy deploy --production",
@@ -60,7 +61,7 @@ Typically, you'll then want some helper `package.json:scripts` wrappers:
 
 And then you'll need to override some configuration variables.
 
-Please open up and read all of the `DEFAULTS` object in [`lib/config.js`](./lib/config.js) (particularly those prefixed with `REQUIRED`). The configuration file is self-documenting for everything that you will need to integrate your project.
+Please open up and read all of [`lib/config/defaults.js`](./lib/config/defaults.js) (particularly the fields with `REQUIRED` comments). The configuration file is self-documenting for everything that you will need to integrate your project.
 
 You will then need to override the applicable defaults with a configuration file in the current working directory from which you run `formideploy` named `formideploy.config.js`. The overrides can be either a function that takes as input the default configuration and mutates it, or an object which is deep merged into the defaults.
 
@@ -84,9 +85,39 @@ module.exports = (cfg) => {
 ```
 
 ### CI configuration
-`
+
+The following section discusses how to hook up staging and production deploys in your CI.
+
+#### Secrets
+
+We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributors` vault. Most of the secrets we need are environment variables that need to be added to CI.
+
+**Travis**: See the [encryption guide](https://docs.travis-ci.com/user/encryption-keys/#usage). We recommend using the Ruby gem and manually outputting the secret to shell, then adding it to your `.travis.yml` with a comment about what the environment variable name is. For example, if our secret was `SURGE_TOKEN=HASHYHASHYHASH`, we would first encrypt it in a terminal to stdout:
+
+```sh
+$ travis encrypt SURGE_TOKEN=HASHYHASHYHASH
+  secure: "BIG_OL_GIBBERISH_STRING="
+```
+
+Then add that to your `.travis.yml` making sure to place the variable name in a comment so we know which environment var the secret corresponds to:
+
+```yml
+env:
+  global:
+    # SURGE_TOKEN
+    - secure: "BIG_OL_GIBBERISH_STRING="
+```
+
+**CircleCI**:
+
+- [ ] `TODO(10): Add section on CircleCI secrets integration` (https://github.com/FormidableLabs/formideploy/issues/10)
+
+#### Staging Deploy CI
+
+
 - [ ] `TODO: Getting secrets from 1password.`
 - [ ] `TODO: Integrating into Travis.`
+- [ ] `TODO(10): Integrating into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
 ### Localdev configuration
 
@@ -110,6 +141,10 @@ And then look for the terminal log message as to where to navigate to to see you
 ```
 
 ### Deploy
+
+#### Staging deploy
+
+#### Production deploy
 
 - [ ] `TODO: Staging, prod deploys with dryrun`
 
