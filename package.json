@@ -14,12 +14,17 @@
   },
   "scripts": {
     "preversion": "yarn run check",
+    "build:toc": "doctoc --github --notitle --maxlevel 4 README.md",
+    "build": "yarn build:toc",
     "lint": "eslint .",
     "check": "yarn lint"
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "serve-handler": "^6.1.2"
+    "doctoc": "^1.4.0",
+    "execa": "^4.0.0",
+    "serve-handler": "^6.1.2",
+    "surge": "^0.21.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

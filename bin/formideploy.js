@@ -2,10 +2,12 @@
 
 "use strict";
 
-const { serve } = require("../lib/actions/serve");
-const pkg = require("../package.json");
+const chalk = require("chalk");
+const { serve, deploy } = require("../lib/actions");
+const { getLoggers } = require("../lib/util");
 
-const { log } = console;
+const pkg = require("../package.json");
+const { log, error } = getLoggers(pkg.name);
 
 const DEFAULT_PORT = 5000;
 const USAGE = `
@@ -35,26 +37,18 @@ Examples:
 const help = async () => { log(USAGE); };
 const version = async () => { log(pkg.version); };
 
-const deploy = async ({ staging, production, dryrun }) => {
-  if (!staging && !production) {
-    throw new Error("Must choose either --staging or --production deployment");
-  }
-
-  // TODO(2): Deploy staging https://github.com/FormidableLabs/formideploy/issues/2
-  // TODO(3): Deploy production https://github.com/FormidableLabs/formideploy/issues/2
-  log("TODO: deploy", { staging, production, dryrun });
-};
-
 // ============================================================================
 // Configuration
 // ============================================================================
-// Get action or help / version.
-const getAction = (args) => {
+// Get action or help / version name
+const getAction = (args, opts) => {
   // Return actions in priority order.
   if (args.includes("--help") || args.includes("-h")) { return help; }
   if (args.includes("--version") || args.includes("-v")) { return version; }
   if (args.includes("serve")) { return serve; }
-  if (args.includes("deploy")) { return deploy; }
+  if (args.includes("deploy")) {
+    return opts.production ? deploy.production : deploy.staging;
+  }
 
   // Default.
   return help;
@@ -73,13 +67,16 @@ const getOptions = (args) => ({
 // ============================================================================
 const main = async () => {
   const args = process.argv.slice(2); // eslint-disable-line no-magic-numbers
-  const action = getAction(args);
-  await action(getOptions(args));
+  const opts = getOptions(args);
+  const action = getAction(args, opts);
+  const actionName = JSON.stringify({ action: action.name });
+  log(chalk `Starting {green ${actionName}} with options {gray ${JSON.stringify(opts)}}`);
+  await action(opts);
 };
 
 if (require.main === module) {
   main().catch((err) => {
-    console.error(err); // eslint-disable-line no-console
+    error(err);
     process.exit(1); // eslint-disable-line no-process-exit
   });
 }

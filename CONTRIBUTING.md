@@ -9,6 +9,14 @@ Thanks for contributing!
 $ yarn run check
 ```
 
+Before opening a PR make sure to run:
+
+```sh
+$ yarn build
+```
+
+and commit relevant changes (like TOC updates to `.md` docs).
+
 ## Releasing a new version to NPM
 
 _Only for project administrators_.
