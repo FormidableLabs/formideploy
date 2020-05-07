@@ -52,6 +52,7 @@ Typically, you'll then want some helper `package.json:scripts` wrappers:
 ```js
 // package.json
 "scripts": {
+  "clean": "**NOTE**: Not part of formideploy, but should remove all previous distributions",
   "build": "**NOTE**: Not part of formideploy, but should produce a full prod distribution",
   "serve": "formideploy serve",
   "deploy:stage": "formideploy deploy --staging",
