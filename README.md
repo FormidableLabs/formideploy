@@ -10,6 +10,27 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
 * Deploy the build to staging (`surge.sh`)
 * Deploy the build to production (AWS)
 
+## Contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Usage](#usage)
+- [Integration](#integration)
+  - [Repository configuration](#repository-configuration)
+  - [CI configuration](#ci-configuration)
+    - [Secrets](#secrets)
+    - [Staging Deploy CI](#staging-deploy-ci)
+    - [Production Deploy CI](#production-deploy-ci)
+  - [Localdev configuration](#localdev-configuration)
+- [Actions](#actions)
+  - [Serve](#serve)
+  - [Deploy: Staging](#deploy-staging)
+  - [Deploy: Production](#deploy-production)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Usage
 
 ```
