@@ -214,9 +214,19 @@ And then look for at the terminal logs for staging website to view, e.g.:
 [deploy:staging] Publish success for: https://formidable-com-spectacle-staging-333.surge.sh/open-source/spectacle
 ```
 
+If you want to do a manual deploy from localdev, use simulated environment variables to actually trigger the deploy:
+
+```sh
+$ SURGE_LOGIN=<SNIPPED> \
+  SURGE_TOKEN=<SNIPPED> \
+  TRAVIS_PULL_REQUEST=<MAKE_UP_A_NUMBER_OR_STRING> \
+  yarn deploy:stage
+```
+
 ### Deploy: Production
 
 - [ ] `TODO(3): Production deploy`
+- [ ] `TODO(7): Production manual deploy`
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
