@@ -1,5 +1,5 @@
-formideploy
-===========
+formideploy 🚢
+=============
 
 [![npm version][npm_img]][npm_site]
 [![Travis Status][trav_img]][trav_site]
@@ -21,8 +21,9 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Repository configuration](#repository-configuration)
   - [CI configuration](#ci-configuration)
     - [Secrets](#secrets)
-    - [Staging Deploy CI](#staging-deploy-ci)
-    - [Production Deploy CI](#production-deploy-ci)
+    - [GitHub Integration](#github-integration)
+    - [Staging CI](#staging-ci)
+    - [Production CI](#production-ci)
   - [Localdev configuration](#localdev-configuration)
 - [Actions](#actions)
   - [Serve](#serve)
@@ -136,6 +137,8 @@ env:
 
 #### GitHub Integration
 
+We get PR deployment notifications and links via the GitHub [deployments](https://developer.github.com/v3/repos/deployments/) API.
+
 Each lander and the base website have dedicated GitHub users that should be used for CI integration with `formideploy`. If a user for a given lander does not exist, please reach out to Roemer or Lauren to have us create one. You should **never** use a personal access token for CI integration.
 
 Find the appropriate GitHub user in the 1password `Individual Contributor IC` vault, most likely named `GitHub ({LANDER_NAME}-ci)`.
@@ -143,15 +146,15 @@ Find the appropriate GitHub user in the 1password `Individual Contributor IC` va
 * Base website example: `GitHub (formidable-com-ci)`
 * Lander examples: `GitHub (spectacle-ci)`, `GitHub (urql-ci)`, ...
 
-Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions only for `repo_deployment`).
+**Add `GITHUB_DEPLOYMENT_TOKEN`**: Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions only for `repo_deployment`).
 
-#### Staging Deploy CI
+#### Staging CI
 
 Deploying to staging requires the following secrets from the `Individual Contributor IC` vault encrypted into your CI environment.
 
 * `Surge.sh`: Look in the notes section.
-    * `SURGE_LOGIN`
-    * `SURGE_TOKEN`
+    * **Add `SURGE_LOGIN`**
+    * **Add `SURGE_TOKEN`**
 
 **Travis**: For Travis CI users, we will then need a dedicated deployment job. Here's a good example:
 
@@ -176,7 +179,7 @@ jobs:
 
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
-#### Production Deploy CI
+#### Production CI
 
 - [ ] `TODO: Getting secrets from 1password.`
 - [ ] `TODO: Integrating into Travis.`
