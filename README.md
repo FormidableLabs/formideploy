@@ -132,7 +132,7 @@ Serve your build (specified at `build.dir`) with:
 $ formideploy serve
 $ formideploy serve --port 3333
 
-# ... which should be scripted in package.json up as ...
+# ... which should be scripted in package.json as ...
 $ yarn serve
 ```
 
@@ -150,8 +150,9 @@ Deploy your build (at `build.dir`) to `https://{domain.staging}/{site.basePath)}
 $ formideploy deploy --staging --dryrun # Skips actual deploy
 $ formideploy deploy --staging
 
-# ... which should be scripted in package.json up as ...
-$ yarn deploy:staging
+# ... which should be scripted in package.json as ...
+$ yarn deploy:stage --dryrun
+$ yarn deploy:stage
 ```
 
 And then look for at the terminal logs for staging website to view, e.g.:
@@ -162,7 +163,7 @@ And then look for at the terminal logs for staging website to view, e.g.:
 
 ### Deploy: Production
 
-- [ ] `TODO: Staging, prod deploys with dryrun`
+- [ ] `TODO(3): Production deploy`
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
