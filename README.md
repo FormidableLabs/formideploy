@@ -91,7 +91,7 @@ The following section discusses how to hook up staging and production deploys in
 
 #### Secrets
 
-We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributors` vault. Most of the secrets we need are environment variables that need to be added to CI.
+We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributor IC` vault. Most of the secrets we need are environment variables that need to be added to CI.
 
 **Travis**: See the [encryption guide](https://docs.travis-ci.com/user/encryption-keys/#usage). We recommend using the Ruby gem and manually outputting the secret to shell, then adding it to your `.travis.yml` with a comment about what the environment variable name is. For example, if our secret was `SURGE_TOKEN=HASHYHASHYHASH`, we would first encrypt it in a terminal to stdout:
 
@@ -115,9 +115,40 @@ env:
 
 #### Staging Deploy CI
 
+Deploying to staging requires the following secrets from the `Individual Contributor IC` vault encrypted into your CI environment.
+
+* `Surge.sh`: Look in the notes section.
+    * `SURGE_LOGIN`
+    * `SURGE_TOKEN`
+
+**Travis**: For Travis CI users, we will then need a dedicated deployment job. Here's a good example:
+
+```yml
+jobs:
+  include:
+    - stage: documentation
+      node_js: '12'
+      script:
+        # Switch to docs location, install and check.
+        - cd docs
+        - yarn install --frozen-lockfile
+        - yarn run check-ci
+        # Build docs.
+        - yarn run clean
+        - yarn run build
+        # Deploy to staging.
+        - yarn run deploy:stage
+```
+
+`formideploy` is only involved in the last step (`yarn run deploy:stage` assuming you wrapped up a command as we recommend). But the overall job structure just runs **one** staging deployment per PR commit no matter what your build matrix otherwise looks like.
+
+- [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
+
+#### Production Deploy CI
+
 - [ ] `TODO: Getting secrets from 1password.`
 - [ ] `TODO: Integrating into Travis.`
-- [ ] `TODO(10): Integrating into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
+- [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
 ### Localdev configuration
 
