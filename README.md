@@ -114,7 +114,6 @@ env:
 
 #### Staging Deploy CI
 
-
 - [ ] `TODO: Getting secrets from 1password.`
 - [ ] `TODO: Integrating into Travis.`
 - [ ] `TODO(10): Integrating into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
@@ -127,24 +126,41 @@ env:
 
 ### Serve
 
-Once you have configured `formideploy`, you can serve your production build (specified at `build.dir`) with:
+Serve your build (specified at `build.dir`) with:
 
 ```sh
 $ formideploy serve
 $ formideploy serve --port 3333
+
+# ... which should be scripted in package.json up as ...
+$ yarn serve
 ```
 
-And then look for the terminal log message as to where to navigate to to see your lander / base website in action!
+And then look for at the terminal logs for localhost website to view, e.g.:
 
 ```sh
 [serve] Serving build from "dist/open-source/spectacle" at: http://localhost:4000/open-source/spectacle
 ```
 
-### Deploy
+### Deploy: Staging
 
-#### Staging deploy
+Deploy your build (at `build.dir`) to `https://{domain.staging}/{site.basePath)}` with:
 
-#### Production deploy
+```sh
+$ formideploy deploy --staging --dryrun # Skips actual deploy
+$ formideploy deploy --staging
+
+# ... which should be scripted in package.json up as ...
+$ yarn deploy:staging
+```
+
+And then look for at the terminal logs for staging website to view, e.g.:
+
+```sh
+[deploy:staging] Publish success for: https://formidable-com-spectacle-staging-333.surge.sh/open-source/spectacle
+```
+
+### Deploy: Production
 
 - [ ] `TODO: Staging, prod deploys with dryrun`
 
