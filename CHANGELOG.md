@@ -1,6 +1,12 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Feature: Add GitHub deployments to PRs.
+  [#4](https://github.com/FormidableLabs/formideploy/issues/4)
+* Add `FORMIDEPLOY_BUILD_ID` environment variable for localdev deploys.
+
 ## 0.1.1
 
 * Feature: Add `formideploy deploy --staging` action.

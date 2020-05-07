@@ -219,9 +219,11 @@ If you want to do a manual deploy from localdev, use simulated environment varia
 ```sh
 $ SURGE_LOGIN=<SNIPPED> \
   SURGE_TOKEN=<SNIPPED> \
-  TRAVIS_PULL_REQUEST=<MAKE_UP_A_NUMBER_OR_STRING> \
+  FORMIDEPLOY_BUILD_ID=<MAKE_UP_A_NUMBER_OR_STRING> \
   yarn deploy:stage
 ```
+
+_Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 ### Deploy: Production
 
