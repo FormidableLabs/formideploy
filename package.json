@@ -20,6 +20,7 @@
     "check": "yarn lint"
   },
   "dependencies": {
+    "@octokit/rest": "^17.8.0",
     "chalk": "^4.0.0",
     "doctoc": "^1.4.0",
     "execa": "^4.0.0",
