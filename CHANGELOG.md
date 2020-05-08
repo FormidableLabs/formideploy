@@ -1,7 +1,7 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.1.2
 
 * Feature: Add GitHub deployments to PRs.
   [#4](https://github.com/FormidableLabs/formideploy/issues/4)
