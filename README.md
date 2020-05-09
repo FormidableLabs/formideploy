@@ -19,6 +19,7 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
 - [Usage](#usage)
 - [Integration](#integration)
   - [Repository configuration](#repository-configuration)
+  - [Localdev](#localdev)
   - [CI configuration](#ci-configuration)
     - [Secrets](#secrets)
     - [GitHub Integration](#github-integration)
@@ -106,6 +107,25 @@ module.exports = (cfg) => {
   return cfg;
 };
 ```
+
+### Localdev
+
+If you  want to do production deploys / testing locally on your machine, you'll need the AWS CLI:
+
+```sh
+$ brew install awscli
+```
+
+Then, set up `aws-vault` with the AWS access and secret keys for an entry named `AWS IAM ({LANDER_NAME}-ci)` of `AWS IAM (formidable-com-ci)` for the base website in the IC vault:
+
+```bash
+$ brew cask install aws-vault
+$ aws-vault add fmd-{LANDER_NAME}-ci
+# Enter AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values for AWS `{LANDER_NAME}-ci` user
+```
+
+TODO_REST_OF_EXAMPLE
+
 
 ### CI configuration
 
