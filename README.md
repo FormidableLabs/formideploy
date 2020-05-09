@@ -20,12 +20,12 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
 - [Integration](#integration)
   - [Repository configuration](#repository-configuration)
   - [Localdev](#localdev)
-  - [CI configuration](#ci-configuration)
+    - [AWS](#aws)
+  - [CI](#ci)
     - [Secrets](#secrets)
     - [GitHub Integration](#github-integration)
     - [Staging CI](#staging-ci)
     - [Production CI](#production-ci)
-  - [Localdev configuration](#localdev-configuration)
 - [Actions](#actions)
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
@@ -110,6 +110,8 @@ module.exports = (cfg) => {
 
 ### Localdev
 
+#### AWS
+
 If you  want to do production deploys / testing locally on your machine, you'll need the AWS CLI:
 
 ```sh
@@ -118,16 +120,22 @@ $ brew install awscli
 
 Then, set up `aws-vault` with the AWS access and secret keys for an entry named `AWS IAM ({LANDER_NAME}-ci)` of `AWS IAM (formidable-com-ci)` for the base website in the IC vault:
 
-```bash
+```sh
 $ brew cask install aws-vault
 $ aws-vault add fmd-{LANDER_NAME}-ci
 # Enter AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values for AWS `{LANDER_NAME}-ci` user
 ```
 
-TODO_REST_OF_EXAMPLE
+For a quick check to confirm that everything works, try:
 
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  aws s3 ls s3://formidable.com
+```
 
-### CI configuration
+and you should see a listing of files for the base website.
+
+### CI
 
 The following section discusses how to hook up staging and production deploys in your CI.
 
@@ -204,10 +212,6 @@ jobs:
 - [ ] `TODO: Getting secrets from 1password.`
 - [ ] `TODO: Integrating into Travis.`
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
-
-### Localdev configuration
-
-- [ ] `TODO: Localdev - aws-cli, aws-vault, etc.`
 
 ## Actions
 
