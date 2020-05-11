@@ -205,12 +205,20 @@ jobs:
 
 `formideploy` is only involved in the last step (`yarn run deploy:stage` assuming you wrapped up a command as we recommend). But the overall job structure just runs **one** staging deployment per PR commit no matter what your build matrix otherwise looks like.
 
+**CircleCI**:
+
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
 #### Production CI
 
 - [ ] `TODO: Getting secrets from 1password.`
+
+**Travis**:
+
 - [ ] `TODO: Integrating into Travis.`
+
+**CircleCI**:
+
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
 ## Actions
@@ -265,8 +273,30 @@ _Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 ### Deploy: Production
 
-- [ ] `TODO(3): Production deploy`
-- [ ] `TODO(7): Production manual deploy`
+Deploy your build (at `build.dir`) to `https://{domain.production}/{site.basePath)}` with the following. (**Note**: We're leaving in the `--dryrun` flag in these examples so you don't accidentally do a production deploy. If you really mean to do it from localdev, remove `--dryrun`).
+
+```sh
+$ formideploy deploy --production --dryrun
+
+# ... which should be scripted in package.json as ...
+$ yarn deploy:prod --dryrun
+```
+
+And then look for at the terminal logs for staging website to view, e.g.:
+
+```sh
+[deploy:staging] Publish success for: https://formidable.com/open-source/spectacle
+```
+
+If you want to do a manual deploy from localdev, use the appropriate AWS IAM CI user (in this case an example lander):
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  aws s3 ls s3://formidable.com
+  yarn deploy:prod --dryrun
+```
+
+_Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
