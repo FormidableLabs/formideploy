@@ -139,6 +139,8 @@ and you should see a listing of files for the base website.
 
 The following section discusses how to hook up staging and production deploys in your CI.
 
+> **⚠️ Warning**: Our production secrets allow some pretty powerful things like deleting the production website. When doing your final production integrating / testing from localdev make sure to seek out review and guidance from a teammate who has been through the full integration process before and/or Lauren or Roemer.
+
 #### Secrets
 
 We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributor IC` vault. Most of the secrets we need are environment variables that need to be added to CI.
@@ -240,7 +242,7 @@ jobs:
             branch: master
 ```
 
-- [ ] `TODO: Integrating into Travis.`
+Upon merging a PR to `master`, the production deploy should be triggered!
 
 **CircleCI**:
 
