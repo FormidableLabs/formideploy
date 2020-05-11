@@ -211,9 +211,34 @@ jobs:
 
 #### Production CI
 
-- [ ] `TODO: Getting secrets from 1password.`
+Deploying to production requires the following secrets from the `Individual Contributor IC` vault encrypted into your CI environment.
 
-**Travis**:
+* `AWS IAM ({LANDER_NAME}-ci)` _or `AWS IAM (formidable-com-ci)` for the base website and find "Keys" section:
+    * * **Add `AWS_ACCESS_KEY_ID`**
+    * * **Add `AWS_SECRET_ACCESS_KEY`**
+
+**Travis**: For Travis CI users, enhance the staging `jobs.include` task with a `deploy` entry take the same build and deploy it to production. Here's an example:
+
+```yml
+jobs:
+  include:
+    # PREVIOUS ENTRY FROM STAGING SETUP
+    - stage: documentation
+      node_js: '12'
+      script:
+        # ...
+        # NOTE: We're going to reuse this build for production.
+        - yarn run build
+        # ...
+      # --> ADD THIS SECTION TO DEPLOY TO PROD ON MASTER MERGE <--
+      deploy:
+        # Deploy master to production
+        - provider: script
+          script: yarn run deploy:prod
+          skip_cleanup: true
+          on:
+            branch: master
+```
 
 - [ ] `TODO: Integrating into Travis.`
 
