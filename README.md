@@ -176,7 +176,7 @@ Find the appropriate GitHub user in the 1password `Individual Contributor IC` va
 * Base website example: `GitHub (formidable-com-ci)`
 * Lander examples: `GitHub (spectacle-ci)`, `GitHub (urql-ci)`, ...
 
-**Add `GITHUB_DEPLOYMENT_TOKEN`**: Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions only for `repo_deployment`).
+**Add `GITHUB_DEPLOYMENT_TOKEN`**: Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions for the limited `repo > repo_deployment` for public repos and the much more expansive `repo` for private ones).
 
 #### Staging CI
 
