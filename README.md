@@ -270,7 +270,7 @@ And then look for at the terminal logs for localhost website to view, e.g.:
 
 ### Deploy: Staging
 
-Deploy your build (at `build.dir`) to `https://{domain.staging}/{site.basePath)}` with:
+Deploy your build (at `build.dir`) to `https://{staging.domain}/{site.basePath)}` with:
 
 ```sh
 $ formideploy deploy --staging --dryrun # Skips actual deploy
@@ -300,7 +300,7 @@ _Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 ### Deploy: Production
 
-Deploy your build (at `build.dir`) to `https://{domain.production}/{site.basePath)}` with the following. (**Note**: We're leaving in the `--dryrun` flag in these examples so you don't accidentally do a production deploy. If you really mean to do it from localdev, remove `--dryrun`).
+Deploy your build (at `build.dir`) to `https://{production.domain}/{site.basePath)}` with the following. (**Note**: We're leaving in the `--dryrun` flag in these examples so you don't accidentally do a production deploy. If you really mean to do it from localdev, remove `--dryrun`).
 
 ```sh
 $ formideploy deploy --production --dryrun
