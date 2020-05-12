@@ -312,7 +312,7 @@ $ yarn deploy:prod --dryrun
 And then look for at the terminal logs for staging website to view, e.g.:
 
 ```sh
-[deploy:staging] Publish success for: https://formidable.com/open-source/spectacle
+[deploy:production] Publish success for: https://formidable.com/open-source/spectacle
 ```
 
 If you want to do a manual deploy from localdev, use the appropriate AWS IAM CI user (in this case an example lander):
