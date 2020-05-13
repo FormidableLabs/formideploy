@@ -1,6 +1,11 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Feature: Add `formideploy deploy --production` action.
+  [#3](https://github.com/FormidableLabs/formideploy/issues/3)
+
 ## 0.1.2
 
 * Feature: Add GitHub deployments to PRs.
