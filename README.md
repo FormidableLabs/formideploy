@@ -19,12 +19,13 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
 - [Usage](#usage)
 - [Integration](#integration)
   - [Repository configuration](#repository-configuration)
-  - [CI configuration](#ci-configuration)
+  - [Localdev](#localdev)
+    - [AWS](#aws)
+  - [CI](#ci)
     - [Secrets](#secrets)
     - [GitHub Integration](#github-integration)
     - [Staging CI](#staging-ci)
     - [Production CI](#production-ci)
-  - [Localdev configuration](#localdev-configuration)
 - [Actions](#actions)
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
@@ -107,9 +108,38 @@ module.exports = (cfg) => {
 };
 ```
 
-### CI configuration
+### Localdev
+
+#### AWS
+
+If you  want to do production deploys / testing locally on your machine, you'll need the AWS CLI:
+
+```sh
+$ brew install awscli
+```
+
+Then, set up `aws-vault` with the AWS access and secret keys for an entry named `AWS IAM ({LANDER_NAME}-ci)` of `AWS IAM (formidable-com-ci)` for the base website in the IC vault:
+
+```sh
+$ brew cask install aws-vault
+$ aws-vault add fmd-{LANDER_NAME}-ci
+# Enter AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values for AWS `{LANDER_NAME}-ci` user
+```
+
+For a quick check to confirm that everything works, try:
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  aws s3 ls s3://formidable.com
+```
+
+and you should see a listing of files for the base website.
+
+### CI
 
 The following section discusses how to hook up staging and production deploys in your CI.
+
+> **⚠️ Warning**: Our production secrets allow some pretty powerful things like deleting the production website. When doing your final production integrating / testing from localdev make sure to seek out review and guidance from a teammate who has been through the full integration process before and/or Lauren or Roemer.
 
 #### Secrets
 
@@ -146,7 +176,7 @@ Find the appropriate GitHub user in the 1password `Individual Contributor IC` va
 * Base website example: `GitHub (formidable-com-ci)`
 * Lander examples: `GitHub (spectacle-ci)`, `GitHub (urql-ci)`, ...
 
-**Add `GITHUB_DEPLOYMENT_TOKEN`**: Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions only for `repo_deployment`).
+**Add `GITHUB_DEPLOYMENT_TOKEN`**: Once you've found the relevant entry in 1password, look to the `Tokens` section for a `GITHUB_DEPLOYMENT_TOKEN` key and token value and add it to your environment variable secrets in CI. If the information is missing, please reach out to Roemer, who will create one (https://github.com/settings/tokens with permissions for the limited `repo > repo_deployment` for public repos and the much more expansive `repo` for private ones).
 
 #### Staging CI
 
@@ -177,17 +207,46 @@ jobs:
 
 `formideploy` is only involved in the last step (`yarn run deploy:stage` assuming you wrapped up a command as we recommend). But the overall job structure just runs **one** staging deployment per PR commit no matter what your build matrix otherwise looks like.
 
+**CircleCI**:
+
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
 
 #### Production CI
 
-- [ ] `TODO: Getting secrets from 1password.`
-- [ ] `TODO: Integrating into Travis.`
+Deploying to production requires the following secrets from the `Individual Contributor IC` vault encrypted into your CI environment.
+
+* `AWS IAM ({LANDER_NAME}-ci)` _or `AWS IAM (formidable-com-ci)` for the base website and find "Keys" section:
+    * * **Add `AWS_ACCESS_KEY_ID`**
+    * * **Add `AWS_SECRET_ACCESS_KEY`**
+
+**Travis**: For Travis CI users, enhance the previous staging `jobs.include` task we created above with a `deploy` entry to take the same build and deploy it to production. Here's an example:
+
+```yml
+jobs:
+  include:
+    # PREVIOUS ENTRY FROM STAGING SETUP
+    - stage: documentation
+      node_js: '12'
+      script:
+        # ...
+        # NOTE: We're going to reuse this build for production.
+        - yarn run build
+        # ...
+      # --> ADD THIS SECTION TO DEPLOY TO PROD ON MASTER MERGE <--
+      deploy:
+        # Deploy master to production
+        - provider: script
+          script: yarn run deploy:prod
+          skip_cleanup: true
+          on:
+            branch: master
+```
+
+Upon merging a PR to `master`, the production deploy should be triggered!
+
+**CircleCI**:
+
 - [ ] `TODO(10): Add section on jobs into CircleCI. (urql)` (https://github.com/FormidableLabs/formideploy/issues/10)
-
-### Localdev configuration
-
-- [ ] `TODO: Localdev - aws-cli, aws-vault, etc.`
 
 ## Actions
 
@@ -211,7 +270,7 @@ And then look for at the terminal logs for localhost website to view, e.g.:
 
 ### Deploy: Staging
 
-Deploy your build (at `build.dir`) to `https://{domain.staging}/{site.basePath)}` with:
+Deploy your build (at `build.dir`) to `https://{staging.domain}/{site.basePath)}` with:
 
 ```sh
 $ formideploy deploy --staging --dryrun # Skips actual deploy
@@ -241,8 +300,30 @@ _Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 ### Deploy: Production
 
-- [ ] `TODO(3): Production deploy`
-- [ ] `TODO(7): Production manual deploy`
+Deploy your build (at `build.dir`) to `https://{production.domain}/{site.basePath)}` with the following. (**Note**: We're leaving in the `--dryrun` flag in these examples so you don't accidentally do a production deploy. If you really mean to do it from localdev, remove `--dryrun`).
+
+```sh
+$ formideploy deploy --production --dryrun
+
+# ... which should be scripted in package.json as ...
+$ yarn deploy:prod --dryrun
+```
+
+And then look for at the terminal logs for production website to view, e.g.:
+
+```sh
+[deploy:production] Publish success for: https://formidable.com/open-source/spectacle
+```
+
+If you want to do a manual deploy from localdev, use the appropriate AWS IAM CI user (in this case an example lander):
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  aws s3 ls s3://formidable.com
+  yarn deploy:prod --dryrun
+```
+
+_Note_: Localdev deploys will skip GitHub deployment PR integration.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy

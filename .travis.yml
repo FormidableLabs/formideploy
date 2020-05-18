@@ -19,4 +19,4 @@ cache: yarn
 script:
   - node --version
   - yarn --version
-  - yarn check
+  - yarn run check
