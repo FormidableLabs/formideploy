@@ -1,7 +1,7 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.2.0
 
 * BREAKING: Refactor configuration shape minorly.
 * Feature: Add `formideploy deploy --production` action.
