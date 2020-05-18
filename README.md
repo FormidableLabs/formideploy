@@ -219,7 +219,7 @@ Deploying to production requires the following secrets from the `Individual Cont
     * * **Add `AWS_ACCESS_KEY_ID`**
     * * **Add `AWS_SECRET_ACCESS_KEY`**
 
-**Travis**: For Travis CI users, enhance the staging `jobs.include` task with a `deploy` entry take the same build and deploy it to production. Here's an example:
+**Travis**: For Travis CI users, enhance the previous staging `jobs.include` task we created above with a `deploy` entry to take the same build and deploy it to production. Here's an example:
 
 ```yml
 jobs:
@@ -309,7 +309,7 @@ $ formideploy deploy --production --dryrun
 $ yarn deploy:prod --dryrun
 ```
 
-And then look for at the terminal logs for staging website to view, e.g.:
+And then look for at the terminal logs for production website to view, e.g.:
 
 ```sh
 [deploy:production] Publish success for: https://formidable.com/open-source/spectacle
