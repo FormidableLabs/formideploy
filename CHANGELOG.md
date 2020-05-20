@@ -1,6 +1,11 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Permissively handle missing credentials for forked PRs for staging actions.
+* Harmonize `deploy --production|staging` logic and messages.
+
 ## 0.2.0
 
 * BREAKING: Refactor configuration shape minorly.
