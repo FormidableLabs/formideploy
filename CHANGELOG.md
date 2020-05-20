@@ -1,6 +1,10 @@
 Changes
 =======
 
+## 0.2.2
+
+* Fix incorrect devDependencies.
+
 ## 0.2.1
 
 * Permissively handle missing credentials for forked PRs for staging actions.
