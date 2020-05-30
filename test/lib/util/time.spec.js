@@ -25,7 +25,9 @@ describe("lib/util/time", () => {
   });
 
   describe("toDatePath", () => {
-    it("TODO: base cases");
-    it("TODO: general cases");
+    it("converts dates", () => {
+      expect(toDatePath(new Date(0))).to.eql("19700101-000000-000");
+      expect(toDatePath(new Date('05 October 2011 14:48 UTC'))).to.eql("20111005-144800-000");
+    })
   });
 });
