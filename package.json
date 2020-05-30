@@ -17,7 +17,8 @@
     "build:toc": "doctoc --github --notitle --maxlevel 4 README.md",
     "build": "yarn build:toc",
     "lint": "eslint .",
-    "check": "yarn lint"
+    "test": "mocha",
+    "check": "yarn lint && yarn test"
   },
   "dependencies": {
     "@octokit/rest": "^17.8.0",
