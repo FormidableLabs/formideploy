@@ -20,8 +20,16 @@ describe("lib/util/time", () => {
   });
 
   describe("#toDateNum", () => {
+    it("is the correct length", () => {
+      expect(toDateNum(new Date(1233455))).to.have.lengthOf(MAX_DATE.toString().length);
+    });
+
     it("handles epoch", () => {
       expect(toDateNum(new Date(0))).to.eql(MAX_DATE.toString());
+    });
+
+    it("handles the end of time", () => {
+      expect(toDateNum(new Date(MAX_DATE))).to.eql(new Array(16 + 1).join("0"));
     });
 
     it("handles various dates", () => {
@@ -43,10 +51,6 @@ describe("lib/util/time", () => {
           expect(num).to.eql(MAX_DATE - date);
         });
     });
-
-    it("handles the end of time", () => {
-      expect(toDateNum(new Date(MAX_DATE))).to.eql(new Array(16 + 1).join("0"));
-    });
   });
 
   describe("#toDatePath", () => {
@@ -56,21 +60,13 @@ describe("lib/util/time", () => {
     });
 
     it("converts dates without ms", () => {
-      expect(toDatePath(new Date("2016-10-19T23:08:04Z"))).to.eql(
-        "20161019-230804-000"
-      );
-      expect(toDatePath(new Date("2016-10-20T00:00:00Z"))).to.eql(
-        "20161020-000000-000"
-      );
+      expect(toDatePath(new Date("2016-10-19T23:08:04Z"))).to.eql("20161019-230804-000");
+      expect(toDatePath(new Date("2016-10-20T00:00:00Z"))).to.eql("20161020-000000-000");
     });
 
     it("converts dates with ms", () => {
-      expect(toDatePath(new Date("2016-10-19T23:08:04.000Z"))).to.eql(
-        "20161019-230804-000"
-      );
-      expect(toDatePath(new Date("2016-10-20T00:00:00.120Z"))).to.eql(
-        "20161020-000000-120"
-      );
+      expect(toDatePath(new Date("2016-10-19T23:08:04.000Z"))).to.eql("20161019-230804-000");
+      expect(toDatePath(new Date("2016-10-20T00:00:00.120Z"))).to.eql("20161020-000000-120");
     });
   });
 });
