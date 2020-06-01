@@ -30,6 +30,7 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
+    - [Production Archives](#production-archives)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -324,6 +325,21 @@ $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
 ```
 
 _Note_: Localdev deploys will skip GitHub deployment PR integration.
+
+#### Production Archives
+
+To aid with rollbacks and disaster recovery, uploading to production additionally creates a tarball of all of the relevant website files that are uploaded to a separate S3 bucket.
+
+Archives are named in the format:
+
+```
+s3://{production.bucket}-archives/{site.basePath}/archive-{DATE_NUM}-{DATE}.tar.gz
+```
+
+Where `DATE` is the ISO8601 date in GMT and `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
+
+We additionally store metadata on the archive objects as follow: TODO_LIST_METADATA
+
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
