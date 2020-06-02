@@ -333,10 +333,15 @@ To aid with rollbacks and disaster recovery, uploading to production additionall
 Archives are named in the format:
 
 ```
-s3://{production.bucket}-archives/{site.basePath}/archive-{DATE_NUM}-{DATE}.tar.gz
+s3://{production.bucket}-archives/{site.basePath}/archive-{DATE_NUM}-{DATE}-{GIT_SHA}-{GIT_STATE}.tar.gz
 ```
 
-Where `DATE` is the ISO8601 deployment date in GMT and `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
+Where the parts are as follows:
+
+* `DATE` is the ISO8601 deployment date in GMT
+* `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
+* `GIT_SHA` is the short 7-character git hash of the deployed version
+* `GIT_STATE` is an indication of whether git state is `clean` (no changes introduced locally) or `dirty`.
 
 We additionally store metadata on the archive objects as follow: TODO_LIST_METADATA
 
