@@ -336,7 +336,7 @@ Archives are named in the format:
 s3://{production.bucket}-archives/{site.basePath}/archive-{DATE_NUM}-{DATE}.tar.gz
 ```
 
-Where `DATE` is the ISO8601 date in GMT and `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
+Where `DATE` is the ISO8601 deployment date in GMT and `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
 
 We additionally store metadata on the archive objects as follow: TODO_LIST_METADATA
 
