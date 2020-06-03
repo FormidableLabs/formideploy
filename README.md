@@ -343,7 +343,11 @@ Where the parts are as follows:
 * `GIT_SHA` is the short 7-character git hash of the deployed version
 * `GIT_STATE` is an indication of whether git state is `clean` (no changes introduced locally) or `dirty`.
 
-We additionally store metadata on the archive objects as follow: TODO_LIST_METADATA
+We additionally store metadata on the archive objects as follow: **TODO_LIST_METADATA**
+
+Some complexities worth mentioning:
+
+* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
