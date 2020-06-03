@@ -333,7 +333,7 @@ To aid with rollbacks and disaster recovery, uploading to production additionall
 Archives are named in the format:
 
 ```
-s3://{production.bucket}-archives/{site.basePath}/archive-{DATE_NUM}-{DATE}-{GIT_SHA}-{GIT_STATE}.tar.gz
+s3://{production.bucket}-archives/{production.domain}/{site.basePath}/archive-{DATE_NUM}-{DATE}-{GIT_SHA}-{GIT_STATE}.tar.gz
 ```
 
 Where the parts are as follows:
@@ -344,7 +344,6 @@ Where the parts are as follows:
 * `GIT_STATE` is an indication of whether git state is `clean` (no changes introduced locally) or `dirty`.
 
 We additionally store metadata on the archive objects as follow: TODO_LIST_METADATA
-
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
