@@ -1,6 +1,10 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Bug: Fix issue for base website and `bucket//archive` empty path issue.
+
 ## 0.3.0
 
 * BREAKING: Change configuration `build.id` parameter to `build.changeId`.

@@ -343,7 +343,23 @@ Where the parts are as follows:
 * `GIT_SHA` is the short 7-character git hash of the deployed version
 * `GIT_STATE` is an indication of whether git state is `clean` (no changes introduced locally) or `dirty`.
 
-We additionally store metadata on the archive objects as follow: **TODO_LIST_METADATA**
+We additionally store metadata on the archive objects, e.g.:
+
+```js
+{
+  "x-amz-meta-deploy-date": "2020-06-04T20:30:03.636Z",
+  "x-amz-meta-deploy-type": "deploy",
+  "x-amz-meta-build-job-id": "343824144",
+  "x-amz-meta-build-job-url": "https://travis-ci.com/FormidableLabs/spectacle/jobs/343824144",
+  "x-amz-meta-git-user-name": "Travis CI User",
+  "x-amz-meta-git-user-email": "travis@example.org",
+  "x-amz-meta-git-branch": "master",
+  "x-amz-meta-git-commit-date": "2020-06-04T20:25:58.000Z",
+  "x-amz-meta-git-sha": "e15c7688118826b533a4720c689607da78396842",
+  "x-amz-meta-git-state": "clean",
+  "x-amz-meta-git-sha-short": "e15c768"
+}
+```
 
 Some complexities worth mentioning:
 
