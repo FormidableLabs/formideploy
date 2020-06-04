@@ -3,7 +3,7 @@
 "use strict";
 
 const chalk = require("chalk");
-const { serve, deploy } = require("../lib/actions");
+const { archives, serve, deploy } = require("../lib/actions");
 const { getLoggers } = require("../lib/util/log");
 
 const pkg = require("../package.json");
@@ -16,6 +16,7 @@ Usage: ${pkg.name} <action> [options]
 Actions: (<action>)
   serve         Run local server from static build directory
   deploy        Deploy build directory to website
+  archives      List production archives
 
 Options:
   --staging       Deploy build to staging site.          [boolean]
@@ -26,7 +27,7 @@ Options:
   --version, -v   Show version number                    [boolean]
 
 Examples:
-  ${pkg.name} serve                           Serve build directory on port 5000.
+  ${pkg.name} serve --port=3333               Serve build directory on port 5000.
   ${pkg.name} deploy --staging                Deploy build to staging.
   ${pkg.name} deploy --production --dryrun    Simulate production build deploy.
 `.trim();
@@ -45,6 +46,7 @@ const getAction = (args, opts) => {
   // Return actions in priority order.
   if (args.includes("--help") || args.includes("-h")) { return help; }
   if (args.includes("--version") || args.includes("-v")) { return version; }
+  if (args.includes("archives")) { return archives; }
   if (args.includes("serve")) { return serve; }
   if (args.includes("deploy")) {
     return opts.production ? deploy.production : deploy.staging;
