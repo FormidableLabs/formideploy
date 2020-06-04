@@ -1,7 +1,7 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.3.1
 
 * Bug: Fix issue for base website and `bucket//archive` empty path issue.
 
