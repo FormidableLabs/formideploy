@@ -1,6 +1,12 @@
 Changes
 =======
 
+## UNRELEASED
+
+* BREAKING: Change configuration `build.id` parameter to `build.changeId`.
+* Feature: Add deployment archive uploads.
+  [#14](https://github.com/FormidableLabs/formideploy/issues/14)
+
 ## 0.2.2
 
 * Fix incorrect devDependencies.

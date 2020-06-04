@@ -30,6 +30,7 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
+    - [Production Archives](#production-archives)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -324,6 +325,29 @@ $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
 ```
 
 _Note_: Localdev deploys will skip GitHub deployment PR integration.
+
+#### Production Archives
+
+To aid with rollbacks and disaster recovery, uploading to production additionally creates a tarball of all of the relevant website files that are uploaded to a separate S3 bucket.
+
+Archives are named in the format:
+
+```
+s3://{production.bucket}-archives/{production.domain}/{site.basePath}/archive-{DATE_NUM}-{DATE}-{GIT_SHA}-{GIT_STATE}.tar.gz
+```
+
+Where the parts are as follows:
+
+* `DATE` is the ISO8601 deployment date in GMT
+* `DATE_NUM` is a special number based on milliseconds since epoch that decreases as the number increases / dates get later. The use of `DATE_NUM` is to keep the most recent archives at the front of a bucket listing lexicographically, as front-to-back querying is the only efficient operation in S3.
+* `GIT_SHA` is the short 7-character git hash of the deployed version
+* `GIT_STATE` is an indication of whether git state is `clean` (no changes introduced locally) or `dirty`.
+
+We additionally store metadata on the archive objects as follow: **TODO_LIST_METADATA**
+
+Some complexities worth mentioning:
+
+* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy

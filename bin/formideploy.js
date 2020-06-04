@@ -4,7 +4,7 @@
 
 const chalk = require("chalk");
 const { serve, deploy } = require("../lib/actions");
-const { getLoggers } = require("../lib/util");
+const { getLoggers } = require("../lib/util/log");
 
 const pkg = require("../package.json");
 const { log, error } = getLoggers(pkg.name);
