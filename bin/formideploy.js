@@ -25,6 +25,7 @@ Options:
   --staging     (deploy)    Deploy build to staging site.           [boolean]
   --production  (deploy)    Deploy build to staging production.     [boolean]
   --dryrun      (deploy)    Don't actually run deployment actions.  [boolean]
+  --archive     (deploy)    Archive to rollback to.                 [string]
   --limit       (archives)  Max number of archives to list.         [number] [default: 10]
   --start       (archives)  Newest date to list archives from.      [date] [default: Date.now()]
   --help, -h                Show help                               [boolean]
@@ -68,6 +69,7 @@ const getOptions = (args) => ({
   port: parseInt(args.find((val, i) => args[i - 1] === "--port")) || DEFAULT_PORT,
   limit: parseInt(args.find((val, i) => args[i - 1] === "--limit")) || DEFAULT_LIMIT,
   start: new Date(args.find((val, i) => args[i - 1] === "--start") || DEFAULT_START),
+  archive: args.find((val, i) => args[i - 1] === "--archive"),
   dryrun: args.includes("--dryrun"),
   production: args.includes("--production") && !args.includes("--staging"),
   staging: args.includes("--staging")
