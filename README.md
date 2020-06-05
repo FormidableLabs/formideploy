@@ -31,6 +31,7 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
     - [Production Archives](#production-archives)
+  - [Archives](#archives)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -326,7 +327,6 @@ If you want to do a manual deploy from localdev, use the appropriate AWS IAM CI 
 
 ```sh
 $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
-  aws s3 ls s3://formidable.com
   yarn deploy:prod --dryrun
 ```
 
@@ -370,6 +370,35 @@ We additionally store metadata on the archive objects, e.g.:
 Some complexities worth mentioning:
 
 * **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
+
+### Archives
+
+Get a list of production archives that can be rolled back to. This action is intended to only be run from the CLI by a user intending to examine completed deployments / evaluate rollback options.
+
+```sh
+# List 10 most recent archives
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy archives
+
+# List 2 archives starting on/after 2020-06-04T21:27:44.409Z date (UTC)
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy archives --start 2020-06-04T21:27:44.409Z --limit 2
+```
+
+Sample output:
+
+```md
+[archives] Found 6 archives:
+
+| Deploy Date              | Type   | Git SHA | Git State | Name                                                              |
+| ------------------------ | ------ | ------- | --------- | ----------------------------------------------------------------- |
+| 2020-06-05T02:23:26.965Z | deploy | 3a9319f | clean     | archive-8638408676193035-20200605-022326-965-3a9319f-clean.tar.gz |
+| 2020-06-05T02:22:34.842Z | deploy | 3a9319f | clean     | archive-8638408676245158-20200605-022234-842-3a9319f-clean.tar.gz |
+| 2020-06-05T02:21:57.429Z | deploy | 3a9319f | clean     | archive-8638408676282571-20200605-022157-429-3a9319f-clean.tar.gz |
+| 2020-06-04T21:27:44.409Z | deploy | bf41536 | clean     | archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz |
+| 2020-06-04T20:30:03.636Z | deploy | e15c768 | clean     | archive-8638408697396364-20200604-203003-636-e15c768-clean.tar.gz |
+| 2020-06-04T19:55:56.390Z | deploy | a151521 | clean     | archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz |
+```
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy

@@ -3,7 +3,8 @@ Changes
 
 ## UNRELEASED
 
-* TODO: ROLLBACK NOTES
+* Feature: Add `formideploy archives` action.
+  [#20](https://github.com/FormidableLabs/formideploy/issues/20)
 
 ## 0.3.1
 
