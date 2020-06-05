@@ -24,7 +24,9 @@
     "@octokit/rest": "^17.8.0",
     "chalk": "^4.0.0",
     "execa": "^4.0.1",
+    "markdown-table": "^2.0.0",
     "serve-handler": "^6.1.2",
+    "strip-ansi": "^6.0.0",
     "surge": "^0.21.3"
   },
   "devDependencies": {
