@@ -2,7 +2,13 @@
 
 /* eslint-disable no-magic-numbers*/
 
-const { MAX_DATE, padNum, toDateNum, toDatePath } = require("../../../lib/util/time");
+const {
+  MAX_DATE,
+  padNum,
+  toDateNum,
+  fromDateNum,
+  toDatePath
+} = require("../../../lib/util/time");
 
 describe("lib/util/time", () => {
   describe("#padNum", () => {
@@ -50,6 +56,20 @@ describe("lib/util/time", () => {
           // Check actual date number.
           expect(num).to.eql(MAX_DATE - date);
         });
+    });
+  });
+
+  describe("#fromDateNum", () => {
+    it("converts correctly", () => {
+      expect(fromDateNum(toDateNum(new Date(1233455)))).to.eql(new Date(1233455));
+    });
+
+    it("handles epoch", () => {
+      expect(fromDateNum(MAX_DATE)).to.eql(new Date(0));
+    });
+
+    it("handles the end of time", () => {
+      expect(fromDateNum(0)).to.eql(new Date(MAX_DATE));
     });
   });
 
