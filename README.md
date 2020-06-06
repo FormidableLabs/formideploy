@@ -43,13 +43,15 @@ Usage: formideploy <action> [options]
 Actions: (<action>)
   serve         Run local server from static build directory
   deploy        Deploy build directory to website
-  archives      List production archives
+  archives      List production archives or single archive
 
 Options:
   --port        (serve)     Port to run local server on.            [number] [default: 5000]
   --staging     (deploy)    Deploy build to staging site.           [boolean]
   --production  (deploy)    Deploy build to staging production.     [boolean]
   --dryrun      (deploy)    Don't actually run deployment actions.  [boolean]
+  --archive     (deploy)    Archive to rollback to.                 [string]
+                (archives)  Display metadata for single archive.
   --limit       (archives)  Max number of archives to list.         [number] [default: 10]
   --start       (archives)  Newest date to list archives from.      [date] [default: Date.now()]
   --help, -h                Show help                               [boolean]
@@ -59,9 +61,13 @@ Examples:
   formideploy serve --port=3333               Serve build directory on port 5000.
   formideploy deploy --staging                Deploy build to staging.
   formideploy deploy --production --dryrun    Simulate production build deploy.
+  formideploy deploy --production \           Rollback deploy to archive.
+                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
   formideploy archives --limit 5              List 5 most recent archives
   formideploy archives \                      List archives on/after specific UTC date.
                 --start 2020-06-05T02:22:34.842Z
+  formideploy archives \                      Display metadata for single archive.
+                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
 ```
 
 ## Integration
