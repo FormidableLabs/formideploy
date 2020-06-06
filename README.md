@@ -62,12 +62,12 @@ Examples:
   formideploy deploy --staging                Deploy build to staging.
   formideploy deploy --production --dryrun    Simulate production build deploy.
   formideploy deploy --production \           Rollback deploy to archive.
-                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   formideploy archives --limit 5              List 5 most recent archives
   formideploy archives \                      List archives on/after specific UTC date.
                 --start 2020-06-05T02:22:34.842Z
   formideploy archives \                      Display metadata for single archive.
-                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 ```
 
 ## Integration
@@ -379,6 +379,8 @@ Some complexities worth mentioning:
 
 ### Archives
 
+#### List Archives
+
 Get a list of production archives that can be rolled back to. This action is intended to only be run from the CLI by a user intending to examine completed deployments / evaluate rollback options.
 
 ```sh
@@ -404,6 +406,32 @@ Sample output:
 | 2020-06-04T21:27:44.409Z | deploy | bf41536 | clean     | archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz |
 | 2020-06-04T20:30:03.636Z | deploy | e15c768 | clean     | archive-8638408697396364-20200604-203003-636-e15c768-clean.tar.gz |
 | 2020-06-04T19:55:56.390Z | deploy | a151521 | clean     | archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz |
+```
+
+#### Archive Metadata
+
+Once you have identified an archive that you are interested in for potential rollback, you can further inspect it with the `--archive` flag and the name of the archive (without prefixes):
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy archives -archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Sample output:
+
+```md
+[archives] Metadata for archive: tmp-experiment-02.formidable.com/open-source/spectacle/archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+* buildJobId:    343845262
+* buildJobUrl:   https://travis-ci.com/FormidableLabs/spectacle/jobs/343845262
+* deployDate:    2020-06-04T21:27:44.409Z
+* deployType:    deploy
+* gitBranch:     master
+* gitCommitDate: 2020-06-04T21:24:23.000Z
+* gitSha:        bf41536539a88ef2ccc8ad6448d7d3d738b223c1
+* gitShaShort:   bf41536
+* gitState:      clean
+* gitUserEmail:  travis@example.org
+* gitUserName:   Travis CI User
 ```
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg

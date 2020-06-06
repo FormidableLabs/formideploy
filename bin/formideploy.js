@@ -37,12 +37,12 @@ Examples:
   ${pkg.name} deploy --staging                Deploy build to staging.
   ${pkg.name} deploy --production --dryrun    Simulate production build deploy.
   ${pkg.name} deploy --production \\           Rollback deploy to archive.
-                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   ${pkg.name} archives --limit 5              List 5 most recent archives
   ${pkg.name} archives \\                      List archives on/after specific UTC date.
                 --start 2020-06-05T02:22:34.842Z
   ${pkg.name} archives \\                      Display metadata for single archive.
-                --archive archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 `.trim();
 
 // ============================================================================
