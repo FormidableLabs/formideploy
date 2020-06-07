@@ -31,6 +31,7 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
   - [Archives](#archives)
+    - [Rollback Strategy](#rollback-strategy)
     - [List Archives](#list-archives)
     - [Archive Metadata](#archive-metadata)
     - [Serve an Archive](#serve-an-archive)
@@ -378,6 +379,15 @@ We additionally store metadata on the archive objects, e.g.:
   "x-amz-meta-git-sha-short": "e15c768"
 }
 ```
+
+#### Rollback Strategy
+
+To perform a rollback of the production site, a good series of actions is follow:
+
+* **Find an archive to rollback to**: List and search on archives with `formideploy archives`
+* **View archive metadata**: See more information about a potential archive you're interested in with `formideploy archives --archive=NAME`
+* **Locally serve the archive**: Check the archive in localdev before rolling back with: `formideploy serve --archive=NAME`
+* **Rollback**: Deploy the archive to production with: `formideploy deploy --production --archive=NAME`
 
 #### List Archives
 
