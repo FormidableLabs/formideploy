@@ -434,6 +434,9 @@ Sample output:
 * gitUserName:   Travis CI User
 ```
 
+* [ ] TODO: Serve archive
+* [ ] TODO: Deploy (rollback) archive
+
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
 [trav_img]: https://api.travis-ci.com/FormidableLabs/formideploy.svg
