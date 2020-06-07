@@ -50,7 +50,8 @@ Options:
   --staging     (deploy)    Deploy build to staging site.           [boolean]
   --production  (deploy)    Deploy build to staging production.     [boolean]
   --dryrun      (deploy)    Don't actually run deployment actions.  [boolean]
-  --archive     (deploy)    Archive to rollback to.                 [string]
+  --archive     (serve)     Archive to serve locally.               [string]
+                (deploy)    Archive to rollback to.
                 (archives)  Display metadata for single archive.
   --limit       (archives)  Max number of archives to list.         [number] [default: 10]
   --start       (archives)  Newest date to list archives from.      [date] [default: Date.now()]
@@ -59,6 +60,8 @@ Options:
 
 Examples:
   formideploy serve --port=3333               Serve build directory on port 5000.
+  formideploy serve \                         Serve from remote archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   formideploy deploy --staging                Deploy build to staging.
   formideploy deploy --production --dryrun    Simulate production build deploy.
   formideploy deploy --production \           Rollback deploy to archive.
