@@ -30,8 +30,11 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
-    - [Production Archives](#production-archives)
   - [Archives](#archives)
+    - [List Archives](#list-archives)
+    - [Archive Metadata](#archive-metadata)
+    - [Serve an Archive](#serve-an-archive)
+    - [Deploy an Archive](#deploy-an-archive)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -341,7 +344,7 @@ $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
 
 _Note_: Localdev deploys will skip GitHub deployment PR integration.
 
-#### Production Archives
+### Archives
 
 To aid with rollbacks and disaster recovery, uploading to production additionally creates a tarball of all of the relevant website files that are uploaded to a separate S3 bucket.
 
@@ -375,12 +378,6 @@ We additionally store metadata on the archive objects, e.g.:
   "x-amz-meta-git-sha-short": "e15c768"
 }
 ```
-
-Some complexities worth mentioning:
-
-* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
-
-### Archives
 
 #### List Archives
 
@@ -437,8 +434,17 @@ Sample output:
 * gitUserName:   Travis CI User
 ```
 
+#### Serve an Archive
+
 * [ ] TODO: Serve archive
+
+#### Deploy an Archive
+
 * [ ] TODO: Deploy (rollback) archive
+
+Some complexities worth mentioning:
+
+* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
