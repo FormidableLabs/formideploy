@@ -446,7 +446,21 @@ Sample output:
 
 #### Serve an Archive
 
-* [ ] TODO: Serve archive
+OK, now we've got an archive that we're thinking of rolling back to! Let's first check it in localdev:
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy serve -archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Sample output:
+
+```
+# ... stuff ...
+[serve] Serving build from "/var/folders/6f/t3p48dxs3dv1qzzxnpwtw5ph0000gn/T/formideploy-builds/tmp-experiment-02.formidable.com/open-source/spectacle" at: http://localhost:5000/open-source/spectacle
+```
+
+Conveniently, using `serve` or `deploy --production --dryrun` primes the cache by locally downloading the zip, so later actions are much faster.
 
 #### Deploy an Archive
 
