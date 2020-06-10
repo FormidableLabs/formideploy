@@ -4,11 +4,13 @@ formideploy 🚢
 [![npm version][npm_img]][npm_site]
 [![Travis Status][trav_img]][trav_site]
 
-Deployment helpers for everything Formidable website-related. This tool helps our base website and open source landers projects:
+Our one stop shop for deploying Formidable websites! Neato things for our website and OSS landers:
 
-* Serve a production build in localdev
-* Deploy the build to staging (`surge.sh`)
-* Deploy the build to production (AWS)
+* 🕯️ Per-PR deploys to staging
+* 🚀 Merge deploys to production
+* 🗄️ Production archives with 1 command 🧻 rollbacks
+* 🏃‍♀️ Instant CDN results and tuned cache headers
+* 🔀 Configuration based path redirects
 
 ## Contents
 
@@ -30,8 +32,12 @@ Deployment helpers for everything Formidable website-related. This tool helps ou
   - [Serve](#serve)
   - [Deploy: Staging](#deploy-staging)
   - [Deploy: Production](#deploy-production)
-    - [Production Archives](#production-archives)
   - [Archives](#archives)
+    - [Rollback Strategy](#rollback-strategy)
+    - [List Archives](#list-archives)
+    - [Archive Metadata](#archive-metadata)
+    - [Serve an Archive](#serve-an-archive)
+    - [Deploy an Archive](#deploy-an-archive)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -43,13 +49,16 @@ Usage: formideploy <action> [options]
 Actions: (<action>)
   serve         Run local server from static build directory
   deploy        Deploy build directory to website
-  archives      List production archives
+  archives      List production archives or single archive
 
 Options:
   --port        (serve)     Port to run local server on.            [number] [default: 5000]
   --staging     (deploy)    Deploy build to staging site.           [boolean]
   --production  (deploy)    Deploy build to staging production.     [boolean]
   --dryrun      (deploy)    Don't actually run deployment actions.  [boolean]
+  --archive     (serve)     Archive to serve locally.               [string]
+                (deploy)    Archive to rollback to.
+                (archives)  Display metadata for single archive.
   --limit       (archives)  Max number of archives to list.         [number] [default: 10]
   --start       (archives)  Newest date to list archives from.      [date] [default: Date.now()]
   --help, -h                Show help                               [boolean]
@@ -57,11 +66,17 @@ Options:
 
 Examples:
   formideploy serve --port=3333               Serve build directory on port 5000.
+  formideploy serve \                         Serve from remote archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   formideploy deploy --staging                Deploy build to staging.
   formideploy deploy --production --dryrun    Simulate production build deploy.
+  formideploy deploy --production \           Rollback deploy to archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   formideploy archives --limit 5              List 5 most recent archives
   formideploy archives \                      List archives on/after specific UTC date.
                 --start 2020-06-05T02:22:34.842Z
+  formideploy archives \                      Display metadata for single archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 ```
 
 ## Integration
@@ -332,7 +347,7 @@ $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
 
 _Note_: Localdev deploys will skip GitHub deployment PR integration.
 
-#### Production Archives
+### Archives
 
 To aid with rollbacks and disaster recovery, uploading to production additionally creates a tarball of all of the relevant website files that are uploaded to a separate S3 bucket.
 
@@ -367,11 +382,16 @@ We additionally store metadata on the archive objects, e.g.:
 }
 ```
 
-Some complexities worth mentioning:
+#### Rollback Strategy
 
-* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
+To perform a rollback of the production site, a good series of actions is follow:
 
-### Archives
+* **Find an archive to rollback to**: List and search on archives with `formideploy archives`
+* **View archive metadata**: See more information about a potential archive you're interested in with `formideploy archives --archive=NAME`
+* **Locally serve the archive**: Check the archive in localdev before rolling back with: `formideploy serve --archive=NAME`
+* **Rollback**: Deploy the archive to production with: `formideploy deploy --production --archive=NAME`
+
+#### List Archives
 
 Get a list of production archives that can be rolled back to. This action is intended to only be run from the CLI by a user intending to examine completed deployments / evaluate rollback options.
 
@@ -388,17 +408,77 @@ $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
 Sample output:
 
 ```md
-[archives] Found 6 archives:
+[archives] Found 8 archives:
 
-| Deploy Date              | Type   | Git SHA | Git State | Name                                                              |
-| ------------------------ | ------ | ------- | --------- | ----------------------------------------------------------------- |
-| 2020-06-05T02:23:26.965Z | deploy | 3a9319f | clean     | archive-8638408676193035-20200605-022326-965-3a9319f-clean.tar.gz |
-| 2020-06-05T02:22:34.842Z | deploy | 3a9319f | clean     | archive-8638408676245158-20200605-022234-842-3a9319f-clean.tar.gz |
-| 2020-06-05T02:21:57.429Z | deploy | 3a9319f | clean     | archive-8638408676282571-20200605-022157-429-3a9319f-clean.tar.gz |
-| 2020-06-04T21:27:44.409Z | deploy | bf41536 | clean     | archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz |
-| 2020-06-04T20:30:03.636Z | deploy | e15c768 | clean     | archive-8638408697396364-20200604-203003-636-e15c768-clean.tar.gz |
-| 2020-06-04T19:55:56.390Z | deploy | a151521 | clean     | archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz |
+| Deploy Date              | Type     | Git SHA | Git State | Name                                                              |
+| ------------------------ | -------- | ------- | --------- | ----------------------------------------------------------------- |
+| 2020-06-10T13:14:10.365Z | rollback | bf41536 | clean     | archive-8638408205149635-20200610-131410-365-bf41536-clean.json   |
+| 2020-06-10T12:53:46.758Z | rollback | bf41536 | clean     | archive-8638408206373242-20200610-125346-758-bf41536-clean.json   |
+| 2020-06-05T02:23:26.965Z | deploy   | 3a9319f | clean     | archive-8638408676193035-20200605-022326-965-3a9319f-clean.tar.gz |
+| 2020-06-05T02:22:34.842Z | deploy   | 3a9319f | clean     | archive-8638408676245158-20200605-022234-842-3a9319f-clean.tar.gz |
+| 2020-06-05T02:21:57.429Z | deploy   | 3a9319f | clean     | archive-8638408676282571-20200605-022157-429-3a9319f-clean.tar.gz |
+| 2020-06-04T21:27:44.409Z | deploy   | bf41536 | clean     | archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz |
+| 2020-06-04T20:30:03.636Z | deploy   | e15c768 | clean     | archive-8638408697396364-20200604-203003-636-e15c768-clean.tar.gz |
+| 2020-06-04T19:55:56.390Z | deploy   | a151521 | clean     | archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz |
 ```
+
+#### Archive Metadata
+
+Once you have identified an archive that you are interested in for potential rollback, you can further inspect it with the `--archive` flag and the name of the archive (without prefixes):
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy archives --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Sample output:
+
+```md
+[archives] Metadata for archive: tmp-experiment-02.formidable.com/open-source/spectacle/archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+* buildJobId:    343845262
+* buildJobUrl:   https://travis-ci.com/FormidableLabs/spectacle/jobs/343845262
+* deployDate:    2020-06-04T21:27:44.409Z
+* deployType:    deploy
+* gitBranch:     master
+* gitCommitDate: 2020-06-04T21:24:23.000Z
+* gitSha:        bf41536539a88ef2ccc8ad6448d7d3d738b223c1
+* gitShaShort:   bf41536
+* gitState:      clean
+* gitUserEmail:  travis@example.org
+* gitUserName:   Travis CI User
+```
+
+#### Serve an Archive
+
+OK, now we've got an archive that we're thinking of rolling back to! Let's first check it in localdev:
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy serve --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Sample output:
+
+```
+# ... stuff ...
+[serve] Serving build from "/var/folders/6f/t3p48dxs3dv1qzzxnpwtw5ph0000gn/T/formideploy-builds/tmp-experiment-02.formidable.com/open-source/spectacle" at: http://localhost:5000/open-source/spectacle
+```
+
+Conveniently, using `serve` or `deploy --production --dryrun` primes the cache by locally downloading the zip, so later actions are much faster.
+
+#### Deploy an Archive
+
+Once we've confirmed the archive that we want to rollback to, we do a deploy:
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy deploy --production --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Some complexities worth mentioning:
+
+* **Rolling back to a rollback**: In addition to rolling back to a zipped archive (`archive-{STUFF}.tar.gz`) you can also view and roll back to a "rollback" entry (`archive-{STUFF}.json`), which under the hood finds the **actual** zipped archive used and transfers to that for serving and deploying.
+* **Deployment information**: Our archives only contain files from the build (typically `dist`). This means things like  s, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`. We could in the future do something like pull the original `formideploy.config.js` file from git directly to get a correct-in-time version of the configuration, etc.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy

@@ -18,13 +18,16 @@ Usage: ${pkg.name} <action> [options]
 Actions: (<action>)
   serve         Run local server from static build directory
   deploy        Deploy build directory to website
-  archives      List production archives
+  archives      List production archives or single archive
 
 Options:
   --port        (serve)     Port to run local server on.            [number] [default: 5000]
   --staging     (deploy)    Deploy build to staging site.           [boolean]
   --production  (deploy)    Deploy build to staging production.     [boolean]
   --dryrun      (deploy)    Don't actually run deployment actions.  [boolean]
+  --archive     (serve)     Archive to serve locally.               [string]
+                (deploy)    Archive to rollback to.
+                (archives)  Display metadata for single archive.
   --limit       (archives)  Max number of archives to list.         [number] [default: 10]
   --start       (archives)  Newest date to list archives from.      [date] [default: Date.now()]
   --help, -h                Show help                               [boolean]
@@ -32,11 +35,17 @@ Options:
 
 Examples:
   ${pkg.name} serve --port=3333               Serve build directory on port 5000.
+  ${pkg.name} serve \\                         Serve from remote archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   ${pkg.name} deploy --staging                Deploy build to staging.
   ${pkg.name} deploy --production --dryrun    Simulate production build deploy.
+  ${pkg.name} deploy --production \\           Rollback deploy to archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
   ${pkg.name} archives --limit 5              List 5 most recent archives
   ${pkg.name} archives \\                      List archives on/after specific UTC date.
                 --start 2020-06-05T02:22:34.842Z
+  ${pkg.name} archives \\                      Display metadata for single archive.
+                --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 `.trim();
 
 // ============================================================================
@@ -68,6 +77,7 @@ const getOptions = (args) => ({
   port: parseInt(args.find((val, i) => args[i - 1] === "--port")) || DEFAULT_PORT,
   limit: parseInt(args.find((val, i) => args[i - 1] === "--limit")) || DEFAULT_LIMIT,
   start: new Date(args.find((val, i) => args[i - 1] === "--start") || DEFAULT_START),
+  archive: args.find((val, i) => args[i - 1] === "--archive"),
   dryrun: args.includes("--dryrun"),
   production: args.includes("--production") && !args.includes("--staging"),
   staging: args.includes("--staging")
