@@ -3,6 +3,8 @@ Changes
 
 ## UNRELEASED
 
+* Feature: Add `formideploy deploy|serve|archives --archive` options to support rollbacks.
+  [#20](https://github.com/FormidableLabs/formideploy/issues/20)
 * Feature: Add `formideploy archives` action.
   [#20](https://github.com/FormidableLabs/formideploy/issues/20)
 
