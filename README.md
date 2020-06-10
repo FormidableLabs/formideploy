@@ -418,13 +418,15 @@ Sample output:
 | 2020-06-04T19:55:56.390Z | deploy | a151521 | clean     | archive-8638408699443610-20200604-195556-390-a151521-clean.tar.gz |
 ```
 
+- [ ] TODO(rollback): Update with list of rollbacks too and note that _can_ roll back to `.json` files which just proxies to real archive.
+
 #### Archive Metadata
 
 Once you have identified an archive that you are interested in for potential rollback, you can further inspect it with the `--archive` flag and the name of the archive (without prefixes):
 
 ```sh
 $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
-  formideploy archives -archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+  formideploy archives --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 ```
 
 Sample output:
@@ -450,7 +452,7 @@ OK, now we've got an archive that we're thinking of rolling back to! Let's first
 
 ```sh
 $ aws-vault exec fmd-{LANDER_NAME}-ci -- \
-  formideploy serve -archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+  formideploy serve --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
 ```
 
 Sample output:
@@ -464,11 +466,20 @@ Conveniently, using `serve` or `deploy --production --dryrun` primes the cache b
 
 #### Deploy an Archive
 
-* [ ] TODO: Deploy (rollback) archive
+Once we've confirmed the archive that we want to rollback to, we do a deploy:
+
+```sh
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
+  formideploy deploy --production --archive archive-8638408693935591-20200604-212744-409-bf41536-clean.tar.gz
+```
+
+Sample output:
+
+* [ ] TODO: Deploy (rollback) archive SAMPLE OUTPUT
 
 Some complexities worth mentioning:
 
-* **Rolling back**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`.
+* **Deployment information**: Our archives only contain files from the build (typically `dist`). This means things like redirects, metadata, cache settings, etc. are not contained usefully in the archive. Accordingly, the pristine way to do a rollback is also to checkout the source repo (lander or base website) at the deployed hash found in the archive file name at `GIT_SHA` and in metadata headers at `git-sha`. We could in the future do something like pull the original `formideploy.config.js` file from git directly to get a correct-in-time version of the configuration, etc.
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
