@@ -246,6 +246,9 @@ jobs:
       - name: Deploy docs
         run: yarn run deploy:stage
         env:
+          # GH actions have a merge commit that _isn't_ our actual commits.
+          # Manually infer and pass the correct branch and sha.
+          FORMIDEPLOY_GIT_SHA: ${{ github.event.pull_request.head.sha }}
           # Pass automagic GITHUB_TOKEN as GITHUB_DEPLOYMENT_TOKEN
           GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
