@@ -243,7 +243,10 @@ jobs:
         run: |
           yarn run clean
           yarn run build
-      - name: Deploy docs
+
+      - name: Deploy docs (staging)
+        # Insert name of your default branch here
+        if: github.ref != 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
         run: yarn run deploy:stage
         env:
           # GH actions have a merge commit that _isn't_ our actual commits.
@@ -287,6 +290,27 @@ Deploying to production requires the following secrets from the `Individual Cont
 * `AWS IAM ({LANDER_NAME}-ci)` _or `AWS IAM (formidable-com-ci)` for the base website and find "Keys" section:
     * * **Add `AWS_ACCESS_KEY_ID`**
     * * **Add `AWS_SECRET_ACCESS_KEY`**
+
+**GitHub Actions**: For actions users, enhance the previous staging `jobs.docs.steps` task we created above with an additional production-only step:
+
+```yml
+jobs:
+  # ...
+
+  docs:
+    # ...
+    steps:
+      # ... PREVIOUS ENTRY FROM STAGING SETUP
+
+      - name: Deploy docs (production)
+        # Insert name of your default branch here
+        if: github.ref == 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
+        run: yarn run deploy:stage
+        env:
+          GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+```
 
 **Travis**: For Travis CI users, enhance the previous staging `jobs.include` task we created above with a `deploy` entry to take the same build and deploy it to production. Here's an example:
 
