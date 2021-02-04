@@ -168,6 +168,10 @@ The following section discusses how to hook up staging and production deploys in
 
 We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributor IC` vault. Most of the secrets we need are environment variables that need to be added to CI.
 
+**GitHub Actions**: GitHub actions have [encrypted secrets](https://docs.github.com/en/actions/reference/encrypted-secrets) that you can enter in your repository website at something like `https://github.com/FormidableLabs/{PROJECT_NAME}/settings/secrets/actions`.
+
+Choose `Repository secrets` to be available always to the repository. Then enter the secret using the matching environment variable name as requested.
+
 **Travis**: See the [encryption guide](https://docs.travis-ci.com/user/encryption-keys/#usage). We recommend using the Ruby gem and manually outputting the secret to shell, then adding it to your `.travis.yml` with a comment about what the environment variable name is. For example, if our secret was `SURGE_TOKEN=HASHYHASHYHASH`, we would first encrypt it in a terminal to stdout:
 
 ```sh
@@ -192,6 +196,8 @@ env:
 
 We get PR deployment notifications and links via the GitHub [deployments](https://developer.github.com/v3/repos/deployments/) API.
 
+> **ℹ️ Note**: GitHub actions provides `secrets.GITHUB_TOKEN` automagically. If you are using GitHub actions, you can skip this integration as we can just use `GITHUB_TOKEN`.
+
 Each lander and the base website have dedicated GitHub users that should be used for CI integration with `formideploy`. If a user for a given lander does not exist, please reach out to Roemer or Lauren to have us create one. You should **never** use a personal access token for CI integration.
 
 Find the appropriate GitHub user in the 1password `Individual Contributor IC` vault, most likely named `GitHub ({LANDER_NAME}-ci)`.
@@ -208,6 +214,49 @@ Deploying to staging requires the following secrets from the `Individual Contrib
 * `Surge.sh`: Look in the notes section.
     * **Add `SURGE_LOGIN`**
     * **Add `SURGE_TOKEN`**
+
+**GitHub Actions**: For actions users, here's an example:
+
+```yml
+jobs:
+  # ...
+
+  docs:
+    # ...
+    defaults:
+      run:
+        # IMPORTANT: Switch working directory to docs!
+        working-directory: docs
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: AWS CLI version
+        run: "aws --version"
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile --non-interactive
+      - name: Quality checks
+        run: yarn run check-ci
+      - name: Build docs
+        run: |
+          yarn run clean
+          yarn run build
+
+      - name: Deploy docs (staging)
+        # Insert name of your default branch here
+        if: github.ref != 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
+        run: yarn run deploy:stage
+        env:
+          # GH actions have a merge commit that _isn't_ our actual commits.
+          # Manually infer and pass the correct branch and sha.
+          FORMIDEPLOY_GIT_SHA: ${{ github.event.pull_request.head.sha }}
+          # Pass automagic GITHUB_TOKEN as GITHUB_DEPLOYMENT_TOKEN
+          GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+```
 
 **Travis**: For Travis CI users, we will then need a dedicated deployment job. Here's a good example:
 
@@ -241,6 +290,27 @@ Deploying to production requires the following secrets from the `Individual Cont
 * `AWS IAM ({LANDER_NAME}-ci)` _or `AWS IAM (formidable-com-ci)` for the base website and find "Keys" section:
     * * **Add `AWS_ACCESS_KEY_ID`**
     * * **Add `AWS_SECRET_ACCESS_KEY`**
+
+**GitHub Actions**: For actions users, enhance the previous staging `jobs.docs.steps` task we created above with an additional production-only step:
+
+```yml
+jobs:
+  # ...
+
+  docs:
+    # ...
+    steps:
+      # ... PREVIOUS ENTRY FROM STAGING SETUP
+
+      - name: Deploy docs (production)
+        # Insert name of your default branch here
+        if: github.ref == 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
+        run: yarn run deploy:stage
+        env:
+          GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+```
 
 **Travis**: For Travis CI users, enhance the previous staging `jobs.include` task we created above with a `deploy` entry to take the same build and deploy it to production. Here's an example:
 
