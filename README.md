@@ -172,8 +172,6 @@ We maintain our secrets in 1password and the relevant credentials can be found i
 
 Choose `Repository secrets` to be available always to the repository. Then enter the secret using the matching environment variable name as requested.
 
-> **ℹ️ Note**: Although GitHub provides `secrests.GITHUB_TOKEN` automagically, we still use the extra custom `GITHUB_DEPLOYMENT_TOKEN` name and values and entre like any other secret.
-
 **Travis**: See the [encryption guide](https://docs.travis-ci.com/user/encryption-keys/#usage). We recommend using the Ruby gem and manually outputting the secret to shell, then adding it to your `.travis.yml` with a comment about what the environment variable name is. For example, if our secret was `SURGE_TOKEN=HASHYHASHYHASH`, we would first encrypt it in a terminal to stdout:
 
 ```sh
@@ -198,6 +196,8 @@ env:
 
 We get PR deployment notifications and links via the GitHub [deployments](https://developer.github.com/v3/repos/deployments/) API.
 
+> **ℹ️ Note**: GitHub actions provides `secrets.GITHUB_TOKEN` automagically. If you are using GitHub actions, you can skip this integration as we can just use `GITHUB_TOKEN`.
+
 Each lander and the base website have dedicated GitHub users that should be used for CI integration with `formideploy`. If a user for a given lander does not exist, please reach out to Roemer or Lauren to have us create one. You should **never** use a personal access token for CI integration.
 
 Find the appropriate GitHub user in the 1password `Individual Contributor IC` vault, most likely named `GitHub ({LANDER_NAME}-ci)`.
@@ -214,6 +214,43 @@ Deploying to staging requires the following secrets from the `Individual Contrib
 * `Surge.sh`: Look in the notes section.
     * **Add `SURGE_LOGIN`**
     * **Add `SURGE_TOKEN`**
+
+**GitHub Actions**: For actions users, here's an example:
+
+```yml
+jobs:
+  # ...
+
+  docs:
+    # ...
+    defaults:
+      run:
+        # IMPORTANT: Switch working directory to docs!
+        working-directory: docs
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: AWS CLI version
+        run: "aws --version"
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile --non-interactive
+      - name: Quality checks
+        run: yarn run check-ci
+      - name: Build docs
+        run: |
+          yarn run clean
+          yarn run build
+      - name: Deploy docs
+        run: yarn run deploy:stage
+        env:
+          # Pass automagic GITHUB_TOKEN as GITHUB_DEPLOYMENT_TOKEN
+          GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+```
 
 **Travis**: For Travis CI users, we will then need a dedicated deployment job. Here's a good example:
 
