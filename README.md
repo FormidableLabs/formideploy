@@ -168,6 +168,12 @@ The following section discusses how to hook up staging and production deploys in
 
 We maintain our secrets in 1password and the relevant credentials can be found in the `Individual Contributor IC` vault. Most of the secrets we need are environment variables that need to be added to CI.
 
+**GitHub Actions**: GitHub actions have [encrypted secrets](https://docs.github.com/en/actions/reference/encrypted-secrets) that you can enter in your repository website at something like `https://github.com/FormidableLabs/{PROJECT_NAME}/settings/secrets/actions`.
+
+Choose `Repository secrets` to be available always to the repository. Then enter the secret using the matching environment variable name as requested.
+
+> **ℹ️ Note**: Although GitHub provides `secrests.GITHUB_TOKEN` automagically, we still use the extra custom `GITHUB_DEPLOYMENT_TOKEN` name and values and entre like any other secret.
+
 **Travis**: See the [encryption guide](https://docs.travis-ci.com/user/encryption-keys/#usage). We recommend using the Ruby gem and manually outputting the secret to shell, then adding it to your `.travis.yml` with a comment about what the environment variable name is. For example, if our secret was `SURGE_TOKEN=HASHYHASHYHASH`, we would first encrypt it in a terminal to stdout:
 
 ```sh
