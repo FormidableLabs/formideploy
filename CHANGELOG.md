@@ -1,7 +1,7 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.3.2
 
 * Feature: Add GitHub Actions support.
   [#29](https://github.com/FormidableLabs/formideploy/issues/29)
