@@ -3,6 +3,7 @@ Changes
 
 ## UNRELEASED
 
+* Feature: Add `production.region` configuration variable.
 * Bug: Handle GitHub authentication without AWS authentication without erroring in production deploy.
 * Internal: Add logging information for internal AWS authentication.
 
