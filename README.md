@@ -247,7 +247,7 @@ jobs:
       - name: Deploy docs (staging)
         # Insert name of your default branch here
         if: github.ref != 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
-        run: yarn run deploy:prod
+        run: yarn run deploy:stage
         env:
           # GH actions have a merge commit that _isn't_ our actual commits.
           # Manually infer and pass the correct branch and sha.
@@ -305,7 +305,7 @@ jobs:
       - name: Deploy docs (production)
         # Insert name of your default branch here
         if: github.ref == 'refs/heads/<main|master|YOUR_DEFAULT_BRANCH_NAME>'
-        run: yarn run deploy:stage
+        run: yarn run deploy:prod
         env:
           GITHUB_DEPLOYMENT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
