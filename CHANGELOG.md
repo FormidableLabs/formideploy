@@ -1,6 +1,10 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Bug: Correctly copy over existing metadata in aws-cli v2+ when setting longer cache settings on hashed assets.
+
 ## 0.3.4
 
 * Feature: Add `production.region` configuration variable.
