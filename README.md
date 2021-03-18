@@ -135,10 +135,14 @@ module.exports = (cfg) => {
 
 #### AWS
 
-If you  want to do production deploys / testing locally on your machine, you'll need the AWS CLI:
+If you  want to do production deploys / testing locally on your machine, you'll need the AWS CLI v2:
 
 ```sh
 $ brew install awscli
+
+# Note: Make sure version 2+!
+$ aws --version
+aws-cli/2.1.15 Python/3.9.1 Darwin/19.6.0 source/x86_64 prompt/off
 ```
 
 Then, set up `aws-vault` with the AWS access and secret keys for an entry named `AWS IAM ({LANDER_NAME}-ci)` of `AWS IAM (formidable-com-ci)` for the base website in the IC vault:

@@ -1,7 +1,7 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.4.0
 
 * Bug: Correctly copy over existing metadata in aws-cli v2+ when setting longer cache settings on hashed assets.
 
