@@ -1,6 +1,6 @@
 {
   "name": "formideploy",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Deployment tools for formidable.com websites",
   "main": "index.js",
   "repository": "https://github.com/FormidableLabs/formideploy",
