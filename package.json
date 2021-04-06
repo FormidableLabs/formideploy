@@ -18,8 +18,7 @@
     "build": "yarn build:toc",
     "lint": "eslint .",
     "test": "mocha",
-    "check": "yarn lint && yarn test",
-    "serve": "formideploy serve"
+    "check": "yarn lint && yarn test"
   },
   "dependencies": {
     "@octokit/rest": "^17.8.0",
@@ -38,9 +37,8 @@
     "eslint": "^7.0.0",
     "eslint-config-formidable": "^4.0.0",
     "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-import": "2.x - 6.x\n",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-promise": "^4.2.1",
-    "formideploy": "^0.4.0",
     "mocha": "^7.2.0"
   }
 }
