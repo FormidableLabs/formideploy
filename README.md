@@ -156,8 +156,7 @@ $ aws-vault add fmd-{LANDER_NAME}-ci
 For a quick check to confirm that everything works, try:
 
 ```sh
-$ aws-vault exec fmd-{LANDER_NAME}-ci -- \
-  aws s3 ls s3://formidable.com
+$ aws-vault exec fmd-{LANDER_NAME}-ci -- aws s3 ls s3://formidable.com
 ```
 
 and you should see a listing of files for the base website.
