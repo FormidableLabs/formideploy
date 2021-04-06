@@ -1,6 +1,11 @@
 Changes
 =======
 
+## 0.4.1
+
+* Feature: Add archive tarball size output to table in `formideploy archives` action.
+  [#33](https://github.com/FormidableLabs/formideploy/issues/33)
+
 ## 0.4.0
 
 * Bug: Correctly copy over existing metadata in aws-cli v2+ when setting longer cache settings on hashed assets.
