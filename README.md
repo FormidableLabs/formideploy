@@ -2,7 +2,7 @@ formideploy 🚢
 =============
 
 [![npm version][npm_img]][npm_site]
-[![Travis Status][trav_img]][trav_site]
+[![Actions Status][actions_img]][actions_site]
 
 Our one stop shop for deploying Formidable websites! Neato things for our website and OSS landers:
 
@@ -555,5 +555,5 @@ Some complexities worth mentioning:
 
 [npm_img]: https://badge.fury.io/js/formideploy.svg
 [npm_site]: http://badge.fury.io/js/formideploy
-[trav_img]: https://api.travis-ci.com/FormidableLabs/formideploy.svg
-[trav_site]: https://travis-ci.com/FormidableLabs/formideploy
+[actions_img]: https://github.com/FormidableLabs/formideploy/workflows/CI/badge.svg
+[actions_site]: https://github.com/FormidableLabs/formideploy/actions
