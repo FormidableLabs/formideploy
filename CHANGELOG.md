@@ -1,6 +1,10 @@
 Changes
 =======
 
+## UNRELEASED
+
+* Docs: Add documentation on using Netlify for staging.
+
 ## 0.4.1
 
 * Feature: Add archive tarball size output to table in `formideploy archives` action.
