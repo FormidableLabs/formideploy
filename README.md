@@ -366,6 +366,8 @@ And then look for at the terminal logs for localhost website to view, e.g.:
 
 ### Deploy: Staging
 
+> **ℹ️ Note**: This section discusses our custom commands for `surge.sh` deploys with out-of-the box support. Another alternative is to hook up something with staging/per-PR deploys like Netlify! You would then skip this section and omit `deploy --staging` / `deploy:staging` commands in CI and let the service handle it for you in PRs.
+
 Deploy your build (at `build.dir`) to `https://{staging.domain}/{site.basePath)}` with:
 
 ```sh
