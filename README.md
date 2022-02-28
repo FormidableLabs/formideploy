@@ -559,3 +559,8 @@ Some complexities worth mentioning:
 [npm_site]: http://badge.fury.io/js/formideploy
 [actions_img]: https://github.com/FormidableLabs/formideploy/workflows/CI/badge.svg
 [actions_site]: https://github.com/FormidableLabs/formideploy/actions
+
+
+##Maintenance Status
+
+**Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
