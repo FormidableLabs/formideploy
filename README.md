@@ -3,6 +3,7 @@ formideploy 🚢
 
 [![npm version][npm_img]][npm_site]
 [![Actions Status][actions_img]][actions_site]
+[![Maintenance Status][maintenance-image]](#maintenance-status)
 
 Our one stop shop for deploying Formidable websites! Neato things for our website and OSS landers:
 
@@ -559,6 +560,7 @@ Some complexities worth mentioning:
 [npm_site]: http://badge.fury.io/js/formideploy
 [actions_img]: https://github.com/FormidableLabs/formideploy/workflows/CI/badge.svg
 [actions_site]: https://github.com/FormidableLabs/formideploy/actions
+[maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg?color=brightgreen&style=flat
 
 
 ## Maintenance Status
