@@ -1,8 +1,10 @@
 Changes
 =======
 
-## UNRELEASED
+## 0.4.2
 
+* Feature: Add longer cache TTL to images.
+  [#50](https://github.com/FormidableLabs/formideploy/issues/50)
 * Docs: Add documentation on using Netlify for staging.
 
 ## 0.4.1
